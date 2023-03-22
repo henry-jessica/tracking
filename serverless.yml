@@ -1,0 +1,19 @@
+service: my-service-name
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-west-1
+  environment:
+    MONGODB_URL: 'mongodb+srv://admin:admin2022@mongomyplayground.jpdmnt8.mongodb.net/tracking?retryWrites=true&w=majority'
+functions:
+  app:
+    handler: index.handler
+    events:
+      - http:
+          path: /
+          method: any
+      - websocket: $connect
+      - websocket: $disconnect
+      - websocket:
+          route: $default
+
