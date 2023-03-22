@@ -37,5 +37,5 @@ io.on('connection', (socket) => {
 });
 
 http.listen(port, () => {
-  console.log(`Socket.IO server running at https://54.229.61.217/${port}/`);
+  console.log(`Socket.IO server running at https://54.229.61.217:${port}/`);
 });
