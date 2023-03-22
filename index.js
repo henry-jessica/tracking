@@ -1,6 +1,10 @@
 const app = require('express')();
-const serverless = require('serverless-http');
-const io = require('socket.io')();
+const http = require('http').Server(app);
+const io = require('socket.io')(http,  {
+  cors: {
+    origin: '*',
+  }
+});
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -8,7 +12,7 @@ app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Credentials', true);
   next();
 });
-
+// const port = process.env.PORT || 3000;
 const historyRouter = require("./routes/HistoryRoutes");
 const historyService = require('./services/HistoryService');
 app.use("/api/history", historyRouter);
@@ -19,6 +23,10 @@ mongoose.connect(url, { useNewUrlParser: true })
   .then(() => console.log('Connected to MongoDB Atlas'))
   .catch(err => console.error('Error connecting to MongoDB Atlas:', err));
 
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
 io.on('connection', (socket) => {
   socket.on('google-map-history', async msg => {
     console.log('msgmsg===>', typeof msg);
@@ -28,8 +36,6 @@ io.on('connection', (socket) => {
   });
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
-
-module.exports.handler = serverless(app);
+// http.listen(port, () => {
+//   console.log(`Socket.IO server running at http://localhost:${port}/`);
+// });
