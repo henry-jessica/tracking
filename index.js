@@ -12,7 +12,7 @@ app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Credentials', true);
   next();
 });
-// const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 const historyRouter = require("./routes/HistoryRoutes");
 const historyService = require('./services/HistoryService');
 app.use("/api/history", historyRouter);
@@ -36,6 +36,6 @@ io.on('connection', (socket) => {
   });
 });
 
-// http.listen(port, () => {
-//   console.log(`Socket.IO server running at http://localhost:${port}/`);
-// });
+http.listen(port, () => {
+  console.log(`Socket.IO server running at http://localhost:${port}/`);
+});
